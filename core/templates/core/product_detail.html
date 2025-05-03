@@ -1,0 +1,8 @@
+<div class="reviews">
+    {% for review in product.review_set.all %}
+    <div class="review">
+        <p>Rating: {{ review.get_rating_display }}</p>
+        <p>{{ review.comment }}</p>
+    </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,9 @@
+<h3>Your Orders</h3>
+{% for order in orders %}
+<p>{{ order.product.name }} - {{ order.get_status_display }}</p>
+{% endfor %}
+
+<h3>Saved Farms</h3>
+{% for farm in saved_farms %}
+<p>{{ farm.name }}</p>
+{% endfor %}

@@ -1,0 +1,14 @@
+{% for item in cart_items %}
+<div class="card mb-3">
+    <div class="row g-0">
+        <div class="col-md-2">
+            <img src="{{ item.product.image.url }}" class="img-fluid">
+        </div>
+        <div class="col-md-8">
+            <h5>{{ item.product.name }}</h5>
+            <p>Quantity: {{ item.quantity }}</p>
+            <p>Price: ${{ item.product.price }}</p>
+        </div>
+    </div>
+</div>
+{% endfor %}
