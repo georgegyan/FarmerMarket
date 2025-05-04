@@ -1,14 +1,30 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>Your Shopping Cart</h2>
 {% for item in cart_items %}
 <div class="card mb-3">
     <div class="row g-0">
         <div class="col-md-2">
-            <img src="{{ item.product.image.url }}" class="img-fluid">
+            <img src="{{ item.product.image.url }}" class="img-fluid rounded-start">
         </div>
         <div class="col-md-8">
-            <h5>{{ item.product.name }}</h5>
+            <div class="card-body">
+            <h5 class="card-title">{{ item.product.name }}</h5>
             <p>Quantity: {{ item.quantity }}</p>
-            <p>Price: ${{ item.product.price }}</p>
+            <p class="card-text">Price: GHS{{ item.product.price }}</p>
+            <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger">Remove</a>
+            </div>
         </div>
     </div>
 </div>
+{% empty %}
+<p>Your cart is empty</p>
 {% endfor %}
+
+{% if cart_items %}
+<div class="text-end">
+    <h4>Total: GHS{{ total }}</h4>
+    <a href="#" class="btn btn-success">Checkout</a>
+</div>
+{% endif %}
+{% endblock %}
