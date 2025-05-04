@@ -1,11 +1,35 @@
-<form method="get" action="{% url 'product_search' %}">
-    <input type="text" name="q" placeholder="Search...">
-    <select name="category">
-        <option value="">All Categories</option>
-        <option value="vegetables">Vegetables</option>
-        <option value="fruits">Fruits</option>
-    </select>
-    <input type="number" name="min_price" placeholder="Min Price">
-    <input type="number" name="max_price" placeholder="Max Price">
-    <button type="submit">Filter</button>
+{% extends 'core/base.html' %}
+
+{% block content %}
+<form method="get" class="mb-4">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search products...">
+        </div>
+        <div class="col-md-3">
+            <select name="category" class="form-select">
+                <option value="">All Categories</option>
+                <option value="vegetables" {% if selected_category == 'vegetables' %}selected{% endif %}>Vegetables</option>
+                <option value="fruits" {% if selected_category == 'fruits' %}selected{% endif %}>Fruits</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <input type="number" name="min_price" class="form-control" placeholder="Min price">
+        </div>
+        <div class="col-md-2">
+            <input type="number" name="max_price" class="form-control" placeholder="Max price">
+        </div>
+        <div class="col-md-1">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </div>
 </form>
+
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-4 mb-4">
+        <!-- Product card same as home.html -->
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
