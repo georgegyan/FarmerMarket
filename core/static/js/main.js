@@ -1,4 +1,5 @@
 // static/js/main.js
+
 document.addEventListener('DOMContentLoaded', function() {
     // Add to cart buttons
     const addToCartButtons = document.querySelectorAll('.add-to-cart');

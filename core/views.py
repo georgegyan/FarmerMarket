@@ -1,12 +1,59 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from django.contrib.sessions.backends.db import SessionStore
-from .models import Farm, Product, Order, Cart, UserProfileForm
-from .forms import FarmForm, ProductForm
+from django import forms
+from django.contrib import messages
+from .models import Farm, Product, Order, Cart
+from .forms import FarmForm, ProductForm, UserProfileForm
 
 def home(request):
     products = Product.objects.all()
     return render(request, 'core/home.html', {'products': products})
+
+def register_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'core/register.html', {'form': form})
+
+class CustomLoginView(LoginView):
+    template_name = 'core/login.html'
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Email or Username'
+    }))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Password'
+    }))
+
+def login(request):
+    return render(request, 'core/login.html')
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'Invalid username or password')
+    return render(request, 'core/login.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 def product_search(request):
     query = request.GET.get('q', '')
@@ -30,6 +77,7 @@ def product_search(request):
         'query': query,
         'selected_category': category
     })
+
 
 @login_required
 def create_farm(request):
@@ -124,3 +172,11 @@ def product_search(request):
         products = products.filter(price__lte=max_price)
     
     return render(request, 'core/search.html', {'products': products})
+
+def product_list(request):
+    products = Product.objects.all()
+    return render(request, 'core/products.html', {'products': products})
+
+def custom_logout(request):
+    logout(request)
+    return redirect('home')  

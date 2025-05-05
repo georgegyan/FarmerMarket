@@ -1,19 +1,22 @@
-<!-- templates/core/home.html -->
-{% extends 'base.html' %}
+<!-- core/templates/core/home.html -->
+{% extends 'core/base.html' %}
 
 {% block content %}
-<div class="row">
-    {% for product in products %}
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-            <div class="card-body">
-                <h5 class="card-title">{{ product.name }}</h5>
-                <p class="card-text">${{ product.price }} | {{ product.farm.name }}</p>
-                <a href="#" class="btn btn-primary">Add to Cart</a>
-            </div>
-        </div>
+<div class="hero-section text-center py-5 bg-light">
+    <h1 class="display-4">Welcome to AgriHaven</h1>
+    <p class="lead">Your direct connection to fresh farm produce</p>
+    
+    <div class="mt-4">
+        {% if user.is_authenticated %}
+            <a href="{% url 'products' %}" class="btn btn-success btn-lg">Browse Products</a>
+        {% else %}
+            <a href="{% url 'register' %}" class="btn btn-primary btn-lg me-3">Join Now</a>
+            <a href="{% url 'login' %}" class="btn btn-outline-success btn-lg">Sign In</a>
+        {% endif %}
     </div>
-    {% endfor %}
+</div>
+
+<div class="container mt-5">
+    <!-- Featured products section can go here -->
 </div>
 {% endblock %}

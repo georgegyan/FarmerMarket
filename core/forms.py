@@ -1,7 +1,15 @@
 from django import forms
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from .models import Farm, Product, Review
+from .models import Farm, Product, Review, UserProfile
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['phone', 'address', 'saved_farms']
+        widgets = {
+            'saved_farms': forms.CheckboxSelectMultiple
+        }
 
 class FarmForm(forms.ModelForm):
     class Meta:
